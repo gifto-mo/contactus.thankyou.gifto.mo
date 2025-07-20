@@ -8,93 +8,72 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3a86ff;
+            --primary: #3a8ee2;
             --primary-light: #5a9ef3;
             --text: #ffffff;
-            --bg-start: #283f82;
-            --bg-end: #141c37;
+            --text-secondary: #a0aec0;
+            --bg: #1a1e1d;
+            --card-bg: rgba(27, 35, 34, 0.8);
+            --radius: 20px;
+            --transition: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: var(--text);
-            overflow: hidden;
+            background: linear-gradient(135deg, #1a1e2d 0%, #1e2d2d 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
             position: relative;
         }
         
-        /* 動態漸變背景 */
-        .gradient-bg {
-            position: absolute;
+        /* 動態背景元素 */
+        .bg-elements {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-            z-index: -2;
-        }
-        
-        /* 流動色塊效果 */
-        .color-blobs {
-            position: absolute;
-            width: 100%;
-            height: 100%;
             z-index: -1;
-            opacity: 0.2;
-            filter: blur(80px);
+            overflow: hidden;
         }
         
-        .blob-1 {
+        .bg-circle {
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, #3a86ff, transparent 70%);
-            top: -100px;
-            left: -100px;
-            animation: float 15s infinite alternate ease-in-out;
-        }
-        
-        .blob-2 {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, #1e3a8a, transparent 70%);
-            bottom: -150px;
-            right: -100px;
-            animation: float 18s infinite alternate-reverse ease-in-out;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: float 15s infinite linear;
         }
         
         @keyframes float {
-            0% {
-                transform: translate(0, 0);
-            }
-            50% {
-                transform: translate(50px, 50px);
-            }
-            100% {
-                transform: translate(0, 0);
-            }
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(10vw, 10vh); }
+            50% { transform: translate(5vw, 15vh); }
+            75% { transform: translate(-5vw, 5vh); }
         }
         
         /* 卡片設計 */
         .thank-you-card {
-            background: rgba(15, 20, 40, 0.7);
-            border-radius: 16px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
             padding: 40px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             animation: fadeInUp 0.6s ease-out;
             position: relative;
             overflow: hidden;
+            margin: 50px auto;
         }
         
         .thank-you-card::before {
@@ -104,7 +83,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #3a86ff, #1e3a8a);
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
         }
         
         @keyframes fadeInUp {
@@ -141,12 +120,12 @@
             font-size: 1.1rem;
             line-height: 1.6;
             margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-secondary);
         }
         
         .countdown {
             font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--text-secondary);
             margin: 25px 0;
         }
         
@@ -162,17 +141,17 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--primary), #1e3a8a);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
             padding: 12px 28px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
             font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(58, 134, 255, 0.4);
+            box-shadow: 0 6px 20px rgba(58, 142, 226, 0.4);
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -182,17 +161,20 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1e3a8a, var(--primary));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
         }
         
         .btn:hover::before {
-            opacity: 1;
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 25px rgba(58, 142, 226, 0.6);
         }
         
         .btn i {
@@ -202,6 +184,22 @@
         
         .btn:hover i {
             transform: translateX(-3px);
+        }
+        
+        /* 頁腳 */
+        .footer {
+            background: rgba(18, 20, 20, 0.98);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(58, 142, 226, 0.1);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .footer-logo img {
+            height: 50px;
+            opacity: 0.8;
         }
         
         @media (max-width: 600px) {
@@ -221,19 +219,12 @@
             .logo {
                 height: 50px;
             }
-            
-            .blob-1, .blob-2 {
-                filter: blur(60px);
-            }
         }
     </style>
 </head>
 <body>
-    <div class="gradient-bg"></div>
-    <div class="color-blobs">
-        <div class="blob-1"></div>
-        <div class="blob-2"></div>
-    </div>
+    <!-- 動態背景元素 -->
+    <div class="bg-elements" id="bgElements"></div>
     
     <div class="thank-you-card">
         <img class="logo" src="https://raw.githubusercontent.com/gifto-mo/home.gitfmo.mo./main/logo.png" alt="Giftomo Logo">
@@ -249,7 +240,43 @@
         </a>
     </div>
 
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="footer-logo">
+            <img src="https://raw.githubusercontent.com/gifto-mo/home.gitfmo.mo./main/logo.png" alt="Giftomo Logo">
+        </div>
+    </footer>
+
     <script>
+        // 創建動態背景元素
+        function createBackground() {
+            const bgElements = document.getElementById('bgElements');
+            const colors = ['#3a8ee2', '#5a9ef3', '#4a6ee3'];
+            
+            for (let i = 0; i < 5; i++) {
+                const circle = document.createElement('div');
+                circle.classList.add('bg-circle');
+                
+                // 隨機大小
+                const size = Math.random() * 300 + 100;
+                circle.style.width = `${size}px`;
+                circle.style.height = `${size}px`;
+                
+                // 隨機位置
+                circle.style.left = `${Math.random() * 100}%`;
+                circle.style.top = `${Math.random() * 100}%`;
+                
+                // 隨機顏色
+                circle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // 隨機動畫延遲和持續時間
+                circle.style.animationDelay = `${Math.random() * 5}s`;
+                circle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                
+                bgElements.appendChild(circle);
+            }
+        }
+        
         // 倒數計時器
         let seconds = 15;
         const countdownElement = document.getElementById('countdown');
@@ -280,15 +307,9 @@
         `;
         document.head.appendChild(style);
         
-        // 背景色塊動態效果
-        document.addEventListener('mousemove', (e) => {
-            const blob1 = document.querySelector('.blob-1');
-            const blob2 = document.querySelector('.blob-2');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            blob1.style.transform = `translate(${x * 30 - 15}px, ${y * 30 - 15}px)`;
-            blob2.style.transform = `translate(${x * -20 + 10}px, ${y * -20 + 10}px)`;
+        // 頁面加載完成後初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createBackground();
         });
     </script>
 </body>
