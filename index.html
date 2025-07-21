@@ -2,7 +2,7 @@
 <html lang="zh-Hant" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>感謝您的訊息 | Giftomo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -13,15 +13,17 @@
             --text: #ffffff;
             --text-secondary: #a0aec0;
             --bg: #1a1e1d;
-            --card-bg: rgba(27, 35, 34, 0.8);
-            --radius: 20px;
+            --card-bg: rgba(27, 35, 34, 0.9); /* 提高不透明度提升可讀性 */
+            --radius: 16px; /* 稍小的圓角適合移動設備 */
             --transition: 0.3s;
+            --tap-target: 48px; /* 符合觸控目標最小尺寸 */
         }
         
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent; /* 移除點擊高亮 */
         }
         
         body {
@@ -31,9 +33,10 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            padding-bottom: 80px; /* 為頁腳留出空間 */
         }
         
-        /* 動態背景元素 */
+        /* 動態背景元素 - 移動端減少數量和大小 */
         .bg-elements {
             position: fixed;
             top: 0;
@@ -47,8 +50,8 @@
         .bg-circle {
             position: absolute;
             border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.15;
+            filter: blur(40px); /* 移動端減少模糊度 */
+            opacity: 0.1; /* 降低透明度提升可讀性 */
             animation: float 15s infinite linear;
         }
         
@@ -59,21 +62,21 @@
             75% { transform: translate(-5vw, 5vh); }
         }
         
-        /* 卡片設計 */
+        /* 卡片設計 - 移動端優化 */
         .thank-you-card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 40px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px 20px;
+            width: calc(100% - 40px);
+            max-width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             animation: fadeInUp 0.6s ease-out;
             position: relative;
             overflow: hidden;
-            margin: 50px auto;
+            margin: 30px auto;
         }
         
         .thank-you-card::before {
@@ -82,7 +85,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 3px; /* 更細的頂部邊框 */
             background: linear-gradient(90deg, var(--primary), var(--primary-light));
         }
         
@@ -98,63 +101,68 @@
         }
         
         .logo {
-            height: 60px;
-            margin-bottom: 25px;
+            height: 50px;
+            margin-bottom: 20px;
             transition: transform 0.3s ease;
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
+            max-width: 80%;
         }
         
         h1 {
-            font-size: 2rem;
+            font-size: 1.8rem; /* 更大的字體 */
             margin: 0 0 20px 0;
             font-weight: 600;
             background: linear-gradient(to right, #fff, #a0d1ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+            padding: 0 10px;
         }
         
         .message {
             font-size: 1.1rem;
             line-height: 1.6;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             color: var(--text-secondary);
+            padding: 0 10px;
         }
         
         .countdown {
             font-size: 1rem;
             color: var(--text-secondary);
-            margin: 25px 0;
+            margin: 20px 0;
         }
         
         .countdown-number {
             font-weight: bold;
             color: var(--primary-light);
-            font-size: 1.2rem;
+            font-size: 1.3rem; /* 更大的倒數數字 */
             display: inline-block;
             min-width: 30px;
         }
         
+        /* 按鈕優化 - 更大的觸控目標 */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
-            padding: 12px 28px;
+            padding: 16px 28px; /* 更大的內邊距 */
             border-radius: var(--radius);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
-            box-shadow: 0 6px 20px rgba(58, 142, 226, 0.4);
+            font-size: 1.1rem; /* 更大的字體 */
+            box-shadow: 0 4px 15px rgba(58, 142, 226, 0.4);
             position: relative;
             overflow: hidden;
             z-index: 1;
+            min-height: var(--tap-target);
+            width: 90%;
+            max-width: 300px;
+            margin: 0 auto;
         }
         
         .btn::before {
@@ -172,24 +180,19 @@
             left: 100%;
         }
         
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 9px 25px rgba(58, 142, 226, 0.6);
+        .btn:active {
+            transform: scale(0.98); /* 點擊反饋 */
         }
         
         .btn i {
-            margin-right: 8px;
-            transition: transform 0.3s ease;
+            margin-right: 10px;
+            font-size: 1.2rem;
         }
         
-        .btn:hover i {
-            transform: translateX(-3px);
-        }
-        
-        /* 頁腳 */
+        /* 頁腳 - 移動端優化 */
         .footer {
             background: rgba(18, 20, 20, 0.98);
-            padding: 40px 20px;
+            padding: 20px;
             text-align: center;
             border-top: 1px solid rgba(58, 142, 226, 0.1);
             position: fixed;
@@ -198,26 +201,44 @@
         }
         
         .footer-logo img {
-            height: 50px;
+            height: 40px;
             opacity: 0.8;
         }
         
-        @media (max-width: 600px) {
+        /* 橫屏適配 */
+        @media (max-height: 500px) {
             .thank-you-card {
-                padding: 30px 20px;
-                width: 85%;
+                margin: 20px auto;
+                padding: 20px 15px;
             }
             
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
+                margin-bottom: 15px;
             }
             
             .message {
                 font-size: 1rem;
+                margin-bottom: 15px;
+            }
+        }
+        
+        /* 大屏幕手機適配 */
+        @media (min-width: 400px) and (max-width: 600px) {
+            .thank-you-card {
+                width: 90%;
+                padding: 35px 25px;
             }
             
-            .logo {
-                height: 50px;
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* 防止文字過大 */
+        @media (min-width: 600px) {
+            .thank-you-card {
+                max-width: 500px;
             }
         }
     </style>
@@ -235,7 +256,7 @@
             <span id="countdown-text">將在 <span class="countdown-number" id="countdown">15</span> 秒後自動返回首頁</span>
         </div>
         
-        <a href="https://gifto-mo.github.io/home.gifto.mo/" class="btn">
+        <a href="https://gifto-mo.github.io/home.gifto.mo/" class="btn" id="returnBtn">
             <i class="fas fa-arrow-left"></i> 立即返回首頁
         </a>
     </div>
@@ -248,28 +269,29 @@
     </footer>
 
     <script>
-        // 創建動態背景元素
+        // 創建動態背景元素 - 移動端減少元素數量
         function createBackground() {
             const bgElements = document.getElementById('bgElements');
             const colors = ['#3a8ee2', '#5a9ef3', '#4a6ee3'];
+            const isMobile = window.innerWidth < 768;
             
-            for (let i = 0; i < 5; i++) {
+            const elementCount = isMobile ? 3 : 5;
+            
+            for (let i = 0; i < elementCount; i++) {
                 const circle = document.createElement('div');
                 circle.classList.add('bg-circle');
                 
-                // 隨機大小
-                const size = Math.random() * 300 + 100;
+                // 移動端使用更小的尺寸
+                const size = isMobile ? 
+                    Math.random() * 150 + 100 : 
+                    Math.random() * 300 + 100;
+                
                 circle.style.width = `${size}px`;
                 circle.style.height = `${size}px`;
                 
-                // 隨機位置
                 circle.style.left = `${Math.random() * 100}%`;
                 circle.style.top = `${Math.random() * 100}%`;
-                
-                // 隨機顏色
                 circle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                
-                // 隨機動畫延遲和持續時間
                 circle.style.animationDelay = `${Math.random() * 5}s`;
                 circle.style.animationDuration = `${Math.random() * 10 + 10}s`;
                 
@@ -280,14 +302,27 @@
         // 倒數計時器
         let seconds = 15;
         const countdownElement = document.getElementById('countdown');
+        const returnBtn = document.getElementById('returnBtn');
+        
+        // 添加觸摸反饋
+        returnBtn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+        });
+        
+        returnBtn.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+        });
         
         const countdownInterval = setInterval(() => {
             seconds--;
             countdownElement.textContent = seconds;
             
-            // 最後5秒添加脈衝效果
             if (seconds <= 5) {
                 countdownElement.style.animation = 'pulse 0.8s infinite';
+                // 震動反饋 (僅在支持振動API的設備上)
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);
+                }
             }
             
             if (seconds <= 0) {
@@ -310,6 +345,18 @@
         // 頁面加載完成後初始化
         document.addEventListener('DOMContentLoaded', function() {
             createBackground();
+            
+            // 防止移動端滾動彈跳
+            document.body.addEventListener('touchmove', function(e) {
+                if (window.innerHeight >= document.documentElement.scrollHeight) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        });
+        
+        // 橫豎屏切換時重新計算
+        window.addEventListener('orientationchange', function() {
+            setTimeout(createBackground, 300);
         });
     </script>
 </body>
